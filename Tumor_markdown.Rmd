@@ -1,12 +1,15 @@
 ---
-title: "Tumor_questions"
-output: html_document
+title: "Tumor subtype and size and tumor position analysis"
+output:
+  pdf_document: default
+  html_document: default
 ---
+# Description: This report analyzes the relationships between tumor size and hormone receptor subtype as well as the relationship between tumor laterality and distance from chest wall.
 
 ## ABOUT THE DATA:
 # The original data set was provided in an Excel spreadsheet. It included some missing data. I removed rows containing missing data in the original Excel sheet so that I would work from the same source between the markdown and ipython workspaces. I then converted to a CSV file. One improvement that the original authors could have made to the data set would be using shorter and single-word names of column headers -- I ended up renaming a number of these to make it easier to work with. Though not absolutely essential, it would have made sense to group the X, Y, and Z variables together, and subgrouped as the raw values and the normalized values. Instead they were scattered through the spreadsheet in no logical order.
 
-In working with the data, I made the assumption that it had been tabulated error-free (aside from the above missing data) and that it was also a complete data set reflective of the data analyzed in the published paper. 
+#bIn working with the data, I made the assumption that it had been tabulated error-free (aside from the above missing data) and that it was also a complete data set reflective of the data analyzed in the published paper. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -16,11 +19,13 @@ library(tidyverse)
 ```
 ```{r}
 data_renamed4 <- read.csv(
-  file = "~/Boiko_TFCB_Capstone/data_renamed.csv",
+  file = "~/Boiko_TFCB_Capstone/Boiko_TFCB_Capstone/Primary_data_files/data_renamed.csv",
   header = TRUE,
   sep = ",",
   dec = "."
 )
+
+# C:\\Users\\Julie\\Documents\\Boiko_TFCB_Capstone\\Boiko_TFCB_Capstone\\Primary_data_files\\data_renamed.csv
 # This is how I imported my data into Rstudio.
 ```
 
