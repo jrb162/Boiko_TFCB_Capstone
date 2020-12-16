@@ -1,0 +1,70 @@
+---
+title: "Tumor_questions"
+output: html_document
+---
+
+## ABOUT THE DATA:
+# The original data set was provided in an Excel spreadsheet. It included some missing data. I removed rows containing missing data in the original Excel sheet so that I would work from the same source between the markdown and ipython workspaces. I then converted to a CSV file. One improvement that the original authors could have made to the data set would be using shorter and single-word names of column headers -- I ended up renaming a number of these to make it easier to work with. Though not absolutely essential, it would have made sense to group the X, Y, and Z variables together, and subgrouped as the raw values and the normalized values. Instead they were scattered through the spreadsheet in no logical order.
+
+In working with the data, I made the assumption that it had been tabulated error-free (aside from the above missing data) and that it was also a complete data set reflective of the data analyzed in the published paper. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(tidyverse)
+```
+```{r}
+data_renamed4 <- read.csv(
+  file = "~/Boiko_TFCB_Capstone/data_renamed.csv",
+  header = TRUE,
+  sep = ",",
+  dec = "."
+)
+# This is how I imported my data into Rstudio.
+```
+
+```{r}
+names(data_renamed4)
+attach(data_renamed4)
+# Due to an ordeal with getting RStudio to recognize column headers as variables, this was my intermediate step to do so.
+```
+
+## Question 1 -- What is the predominant tumor subtype (ER positive vs triple negative) in the largest 25% of tumors vs the smallest 25% of tumors?
+
+```{r}
+data_renamed4$quartile <- ntile(data_renamed4$Diameter, 4)
+data_renamed4$Subtype_Name <- ifelse(data_renamed4$Subtype == 3,
+    "Triple Negative", "ER Positive"
+    )
+# Here I added a tumor diameter quartile category ("quartile," 1=lowest, 4=highest) and generated a named variable for the tumor subtype ("Subtype_Name") instead of using "1" and "3." Note that the original data Excel indicated that in the Subtype category, 1=ER positive and 3=Triple negative.
+```
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+```{r}
+ggplot(data_renamed4, aes(quartile)) +
+    geom_bar(aes(fill = Subtype_Name), position = "fill") +
+  ggtitle("Proportion of tumors in each size quartile by hormone receptor subtype")
+```
+# Results/Conclusions: ER positive subtype is more common in both the smallest 25% of tumors (quartile 1) and in the largest 25% (quartile 4).
+
+# Rationale for vizualization and formatting choice: Although quartiles are supposed to be the same size, I did not want to risk the possibility that there was slight difference in the tallies of patients/tumors recorded in each quartile due to a rounding issue or otherwise. Thus, I chose a graph which would represent the proportion of tumors of each subtype rather than the absolute numbers in case the numbers were close.
+
+
+
+## Question 2: Are tumors which are very medial (most positive normalized X_norm value) or very lateral (most negative normalized X_norm value) also the tumors which are closest to the chest wall (lowest normalized Y_norm values)? 
+```{r}
+ggplot(data_renamed4, aes(x = X_norm, y = Y_norm)) +
+  geom_point(alpha = 0.3, colore= "red") +
+  geom_jitter() +
+  labs(title="Plot of tumor location -- breast mediality/laterality versus distance from chest wall",
+       x = "Most lateral breast aspect---------------------------------------------------------Most medial breast aspect", y = "Closest to chest wall-----------Farthest from chest wall")
+```
+# Results/Conclusions: Very medial (most positive X_norm) or very lateral (most negative X_norm) tumors are among the closest to the chest wall. Intuitively this makes sense, as breasts' widest points are in the middle and not at the edges; thus, the tumors can likely only "stick out" so far in typical breast anatomy.
+
+# Rationale for vizualization and formatting choice: I chose a graph showing discrete data points because I wanted to visualize individual reltionships between lateral-medial position and proximity to chest wall, so that it would be apparent if there were lots of points in the upper corners which would have answered no to my question. Curiously, the X_norm data normalization is effectively a categorical variable, in the sense it is in discrete increments with visible blank spaces between the resultant "columns."
+
+
