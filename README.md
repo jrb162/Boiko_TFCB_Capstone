@@ -16,3 +16,9 @@ This is a repository of files for the TFCB 2020 course capstone project, studyin
 
 ## Data description
 These data and analyses are based on the publicly available data "Location of triple-negative breast cancers: comparison with estrogen receptor-positive breast cancers on MR imaging" found at https://datadryad.org/stash/dataset/doi:10.5061/dryad.32765. These data were in included in the paper by Kim et al in PLoS One 2015 (https://dx.plos.org/10.1371/journal.pone.0116344).
+
+
+## Research questions
+- Question 1: What is the predominant tumor subtype (ER positive vs triple negative) in the largest 25% of tumors vs the smallest 25% of tumors?
+- Question 2: Are tumors which are very medial or very lateral also the tumors which are closest to the chest wall? 
+- Question 3: Which Histology grade of tumors has the highest proportion of tumors in the Periareolar location?
